@@ -1,5 +1,3 @@
-# Vue
-
 # Webpack 初识
 
 ## 一、什么是Webpack
@@ -1054,6 +1052,24 @@ path: path.resolve(__dirname, '../dist'),
 
 
 
+# 从零构建项目（Webpack）
+
+
+
+1. 创建项目文件夹webpacktest
+
+2. 在项目目录下执行：
+
+   ```
+   npm init
+   ```
+
+   
+
+
+
+
+
 # VUE CLI
 
 ## 1 CLI-脚手架
@@ -1234,6 +1250,32 @@ vue ui
 
 
 
+# Vue
+
+## 1 插值操作
+
+## 2 绑定属性
+
+## 3 计算属性
+
+## 4 事件监听
+
+## 5 条件判断
+
+## 6 循环遍历
+
+## 7 阶段案例
+
+## 8 v-model
+
+Vue中使用v-model指令来实现表单元素和数据的双向绑定。
+
+
+
+
+
+
+
 # Vue-Router
 
 ## 1 路由
@@ -1305,27 +1347,81 @@ vue ui
 
 SPA全称是 simple page web application，单页面的意思就是整个网页只有一个HTML页面。
 
-其实SPA最主要的特点就是在前后端分离的基础上加了一层**前端路由**，也就是前端来维护一套路由规则.
+SPA仅在 Web 页面初始化时加载相应的 HTML、JavaScript 和 CSS。一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转；取而代之的是利用**路由机制**实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。其实SPA最主要的特点就是在前后端分离的基础上加了一层**前端路由**，也就是前端来维护一套路由规则.
 
 - 在前后端分离阶段中，静态资源服务器中不同的 url 往往会对应着不同的一套 html+css+js，因此用户输入 url 后，浏览器就会去静态资源服务器请求对应的 html+css+js 资源。
-- 在单页面富应用阶段，用户在输入 url 之后，浏览器会去静态资源服务器中下载全部的资源，这些资源往往只有一个index.html+css+js，但是不会全部执行，而是通过前端路由管理。
+- 在单页面富应用阶段，用户在输入 url 之后，浏览器会去静态资源服务器中下载全部的资源，这些资源往往只有一个index.html+css+js，**但是不会全部执行，而是通过前端路由管理**。
 - 前端路由的核心就是**改变URL，但是页面不进行整体的刷新**，不同的URL对应着不同的内容（在Vue里面其实就是组件），这就形成了映射关系。
 
+1. **SPA的设计意义：**
+
+- 用户体验好、快，内容的改变不需要重新加载整个页面，避免了不必要的跳转和重复渲染；
+
+- 基于上面一点，SPA 相对对服务器压力小；
+
+- 前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理；
+
+  
+
+2. **缺点：**
+
+- 初次加载耗时多：为实现单页 Web 应用功能及显示效果，**需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载；**
+- SEO 难度较大：由于所有的内容都在一个页面中动态替换显示，所以在 SEO 上其有着天然的弱势。
 
 
 
+3. **SPA的工作原理：**
+
+- history API
+
+  实现优雅，但是对浏览器有兼容性要求
+
+  history接口是HTML5新增的, 它有五种模式改变URL而不刷新页面：
+
+  - history.pushState()
+
+    ```
+    history.pushState({},'','/foo')
+    ```
+
+  - history.replaceState()
+
+    ```
+    history.replaceState({},'','/foo/bar')
+    ```
+
+  - history.go()
+
+    ```
+    history.go(-1)
+    history.go(1)
+    ```
+
+  - history.back() 等价于 history.go(-1)
+
+  - history.forward() 等价于 history.go(1)
 
 
 
+- Hash
+
+  Hash的兼容性最好，hash就是锚点（#），本质上是改变window.location的href属性
+  
+  我们可以直接赋值location.hash来改变href，但是页面不发生刷新：
+  
+  ```
+  location.href = '/foo'
+  ```
+  
+  
 
 
 
+## 3 Vue-Router
 
+Vue-Router 是Vue.js官方的路由插件，它和vue.js是深度集成的，适合用于构建单页面应用。
 
-
-
-
-
+学习网站：https://router.vuejs.org/zh/
 
 
 

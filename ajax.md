@@ -401,11 +401,11 @@ php：
 
 
 
-# 跨域
+## 五、跨域
 
-## 1 同源策略
+### 同源策略
 
-同源策略是浏览器上为安全性考虑实施的非常重要的安全机制。
+**同源策略**是浏览器上为安全性考虑实施的非常重要的安全机制。
 
 Ajax默认是可以获取到同源的数据，但是对于非同源的数据，ajax默认是获取不到的。
 
@@ -425,11 +425,11 @@ http://www.example.com/dir/page.html
 | http://en.example.com/dir/other.html      | 不同源 | 域名不同               |
 | https://www.example.com:81/dir/other.html | 不同源 | 端口不同，80和81       |
 | http://www.example.com/dir/page2.html     | 同源   | 协议，域名，端口都相同 |
-| http://www.example.com/dir2/other.html    | 同源   | 协议，域名，端口都相同 |
+| https://www.example.com/dir2/other.html   | 同源   | 协议，域名，端口都相同 |
 
 
 
-**跨域的必要性**：
+### 跨域的必要性
 
 前端界面访问非同源的服务器这种需求是非常常见的，比如在前端界面中获取天气数据，但天气数据是存储在中国天气网数据库中的，因此我们必须访问非同源的服务器。这就需要使用到**跨域**的技术了。
 
@@ -437,11 +437,11 @@ Ajax是为了访问自己服务器的数据，跨域是为了访问别人服务�
 
 
 
-## 2 跨域的实现——script标签引入外部文件
+### 跨域的实现——script标签引入外部文件
 
-### 2.1 引入外部js文件
+#### 引入外部js文件
 
-跨域的实现就是通过 <script> 标签的 src 属性引入一个外部的文件，这个外部文件是不涉及同源策略的影响的。
+跨域的实现就是通过 script 标签的 src 属性引入一个外部的文件，这个外部文件是不涉及同源策略的影响的。
 
 例如，我们在域名为 www.zhangsan.com 的目录下创建一个html文件，在域名为 www.lisi.com 的目录下创建一个 test.js 文件，
 
@@ -464,7 +464,7 @@ fn('haha');
 
 页面可正常输出"haha"。
 
-### 2.2 引入外部php文件
+#### 引入外部php文件
 
 同样的，我们可以引入一个php文件：
 
@@ -516,9 +516,9 @@ test.php:
 
 
 
-### 2.3 动态创建script标签
+### 动态创建script标签
 
-假如我有一个需求，要实现用户输入的值为参数 good 的值，这就不能将引入的外部 php 文件的url 写死，而需要我们动态创建script标签：
+加入我有一个需求，要实现用户输入的值为参数 good 的值，这就不能将引入的外部 php 文件的url 写死，而需要我们动态创建script标签：
 
 ```javascript
 //动态创建script标签
@@ -529,7 +529,7 @@ var head = document.querySelector("head");
 head.appendChild(script);
 ```
 
-### 2.4 给window添加属性进行方法定义
+### 给window添加属性进行方法定义
 
 我们来看一段代码：
 
@@ -549,7 +549,7 @@ function fn(data){
 
 
 
-### 2.5 动态指定回调函数名称
+### 动态指定回调函数名称
 
 我们可以在php的url地址中再添加一个参数callback，用来动态的指定回掉函数的名称，即：
 
@@ -615,101 +615,12 @@ html代码为：
 
 
 
-## 3 案例分析——百度提示词
+### 案例分析——百度提示词
 
 
 
-## 4 跨域的封装
-
-与ajax的封装一样，我们也希望能将跨域的代码封装进一个函数之中，让用户只需要调用这个函数，传入相应的参数，即可实现跨域。
-
-封装的思想与ajax封装的思想是如出一辙的。
-
-### 4.1 自己封装
-
-```JavaScript
-function myAjax(obj) {
-  //定义默认对象参数
-  var defaults = {
-    type: 'get',//请求类型
-    url: '#',//默认url
-    data: {},//默认数据
-    success: function(data) {
-
-    },//执行函数
-    jsonp: 'callback',//默认服务器获取方法的名称的key值
-    jsonpCallback: 'haha'//默认回调函数名称
-  }
-
-  //让用户输入的obj覆盖默认的defaults
-  for (var key in obj) {
-    defaults[key] = obj[key]
-  }
-
-  //将传入的参数以  ?q=123&w=456 的方式拼接到url
-  var params = ''
-  for (var attr in defaults.data) {
-    params += attr + '=' + defaults.data[attr] + '&'
-  }
-  if(params) {
-    params = params.substring(0, params.length-1)
-    defaults.url += '?' + params
-  }
-  //将url与回调部分拼接
-  defaults.url += '&' + defaults.jsonp + '=' + defaults.jsonpCallback
-  console.log(defaults.url)
-
-  //创建script标签
-  var script = document.createElement('script')
-  script.src = defaults.url
-  //增加window属性，其实就是声明函数
-  window[defaults.jsonpCallback] = function(data) {
-    defaults.success(data)
-  }
-  //将script标签添加到head中
-  var head = document.querySelector('head')
-  head.appendChild(script)
-}
-
-```
-
-这样用户可以直接调用我们封装好的函数，实现跨域：
-
-```JavaScript
-myAjax({
-  url: 'http://zhangsan.com/test.php',
-  data: {
-    q: 123,
-    w: 'java'
-  },
-  suceess: function(data) {
-    console.log(data)
-  },
-  jsonp: 'callback',
-  jsonpCallback: 'fn'
-})
-```
 
 
 
-### 4.2 jQuery封装
 
-jQuery也为我们封装了跨域的函数，在工作中我们通常使用jQuery封装的函数，它考虑的情况比我们自己封装的函数要多一些。
 
-```JavaScript
-$ajax({
-  url: 'http://suggest.taobao.com/sug',
-  data: {
-    q: 123,
-    w: 'java'
-  },
-  success: function(data) {
-    console.log(data)
-  },
-  dataType: 'jsonp',//这个属性就告诉了$ajax，我们要实现跨域，而不是普通的ajax请求
-  jsonp: 'callback',//修改服务器获取方法的名称的key值
-  jsonpCallback: 'haha'//这个属性实际上可有可无，影响不大
-})
-```
-
-这里最需要注意的是，如果想要通过jQuery实现跨域，需要增加**dataType**属性，将其属性值定为“**jsonp**”，如果属性值为"jsonp"、"xml"、"text"，那么jQuery内部就会通过ajax四个步骤获取同源地址下的数据。

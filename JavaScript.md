@@ -386,17 +386,13 @@ Object Oriented Programming，就是面向对象的编程，还有OOD（面向�
    是指一个类的功能要单一，不能包罗万象。如同一个人一样，分配的工作不能太多，否则一天到晚虽然忙忙碌碌的，但效率却高不起来。
 
 2. 开放封闭原则OCP(Open－Close Principle) 
-   一个模块在扩展性方面应该是开放的而在更改性方面应该是封闭的。比如：一个网络模块，原来只服务端功能，而现在要加入客户端功能，
-   那么应当在不用修改服务端功能代码的前提下，就能够增加客户端功能的实现代码，这要求在设计之初，就应当将服务端和客户端分开，公共部分抽象出来。
-
+   一个模块在扩展性方面应该是开放的而在更改性方面应该是封闭的。比如：一个网络模块，原来只服务端功能，而现在要加入客户端功能，那么应当在不用修改服务端功能代码的前提下，就能够增加客户端功能的实现代码，这要求在设计之初，就应当将服务端和客户端分开，公共部分抽象出来。
+   
 3. 替换原则(the Liskov Substitution Principle LSP) 
-   子类应当可以替换父类并出现在父类能够出现的任何地方。比如：公司搞年度晚会，所有员工可以参加抽奖，那么不管是老员工还是新员工，
-   也不管是总部员工还是外派员工，都应当可以参加抽奖，否则这公司就不和谐了。
-
-4. 依赖原则(the Dependency Inversion Principle DIP) 具体依赖抽象，上层依赖下层。假设B是较A低的模块，但B需要使用到A的功能，
-   这个时候，B不应当直接使用A中的具体类： 而应当由B定义一抽象接口，并由A来实现这个抽象接口，B只使用这个抽象接口：这样就达到
-   了依赖倒置的目的，B也解除了对A的依赖，反过来是A依赖于B定义的抽象接口。通过上层模块难以避免依赖下层模块，假如B也直接依赖A的实现，那么就可能造成循环依赖。一个常见的问题就是编译A模块时需要直接包含到B模块的cpp文件，而编译B时同样要直接包含到A的cpp文件。
-
+   子类应当可以替换父类并出现在父类能够出现的任何地方。比如：公司搞年度晚会，所有员工可以参加抽奖，那么不管是老员工还是新员工，也不管是总部员工还是外派员工，都应当可以参加抽奖，否则这公司就不和谐了。
+   
+4. 依赖原则(the Dependency Inversion Principle DIP) 具体依赖抽象，上层依赖下层。假设B是较A低的模块，但B需要使用到A的功能，这个时候，B不应当直接使用A中的具体类： 而应当由B定义一抽象接口，并由A来实现这个抽象接口，B只使用这个抽象接口：这样就达到了依赖倒置的目的，B也解除了对A的依赖，反过来是A依赖于B定义的抽象接口。通过上层模块难以避免依赖下层模块，假如B也直接依赖A的实现，那么就可能造成循环依赖。一个常见的问题就是编译A模块时需要直接包含到B模块的cpp文件，而编译B时同样要直接包含到A的cpp文件。
+   
 5. 接口分离原则(the Interface Segregation Principle ISP) 
    模块间要通过抽象接口隔离开，而不是通过具体的类强耦合起来
 
@@ -720,7 +716,7 @@ console.log(person1.sex)//undefine，不可以用实例访问静态成员
 
 1. **实例成员：**
 
-- 实例成员就是构造函数内部通过this添加的成员，如上例代码中 name、age、sayName就是实例成员。
+- **实例成员就是构造函数内部通过this添加的成员**，如上例代码中 name、age、sayName就是实例成员。
 
 - 实例成员只能通过实例化的对象来访问；
 
@@ -745,6 +741,10 @@ Person.prototype.sayName = function() {
     alert(this.name);
   };
 }
+var person1 = new Person('Linqi', 18)
+
+Person.prototype.hobbies = ['sleep', 'weibo']
+
 console.log(person1)
 // age: 18
 // name: "Linqi"
@@ -754,8 +754,8 @@ console.log(person1)
 //   constructor: ƒ Person(name, age)
 //   __proto__: Object
 // }
-Person.prototype.hobbies = ['sleep', 'weibo']
-var person1 = new Person('Linqi', 18)
+
+
 console.log(person1.__proto__)
 // hobbies: (2) ["sleep", "weibo"]
 // sayName: ƒ ()
@@ -763,23 +763,23 @@ console.log(person1.__proto__)
 // __proto__: Object
 ```
 
-做法是将需要独立的属性方法放入构造函数中，而可以共享的部分则放入原型中，这样做可以最大限度节省内存而又保留对象实例的独立性。
+做法是将需要独立的属性方法放入构造函数中，而可以**共享的部分则放入原型**中，这样做可以最大限度节省内存而又保留对象实例的独立性。
 
 
 
 ## 五、原型链
 
-![原型链](./images\javascript\原型链.png)
+![原型链](./images/javascript/原型链.png)
 
 ### 5.1 构造函数原型 prototype
 
 构造函数方法很好用，但是存在浪费内存的问题。
 
-如上例代码中两个不同的对象ldh和zxy调用sing()方法，指向的是不同的地址。
+如上例代码中两个不同的对象ldh和zxy调用sayName()方法，指向的是不同的地址。
 
 ![浪费内存的构造函数](D:\52007前端学习\前端笔记\images\javascript\浪费内存的构造函数.png)
 
-因此，我们可以把像sing这样的公共方法定义在构造函数的原型对象prototype上，构造函数通过原型分配的函数是所有对象所**共享的**。
+因此，我们可以把像sayName这样的**公共方法**定义在构造函数的原型对象prototype上，构造函数通过原型分配的函数是所有对象所**共享的**。
 
 ```javascript
 Star.prototype.sing = function() {
@@ -797,7 +797,7 @@ Star.prototype.sing = function() {
 
 ### 5.2 对象原型 \__proto__
 
-所有对象都会有一个属性 \_proto\_\_指向构造函数的prototype 原型对象，之所以我们对象可以使用构造函数prototype原型对象的属性和方法，就是因为对象有\__proto__原型的存在。
+所有对象都会有一个属性 \__proto\_\_指向构造函数的 prototype 原型对象，之所以我们对象可以使用构造函数prototype原型对象的属性和方法，就是因为对象有\_\_proto__原型的存在。
 
 - 对象原型\__proto__和构造函数原型对象prototype是等价的；
 
@@ -816,7 +816,7 @@ Star.prototype.sing = function() {
 
 对象原型（ \__proto__）和构造函数（prototype）原型对象里面都有一个属性 constructor 属性 ，constructor 我们称为构造函数，因为它指回构造函数本身。
 
-constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数：
+**constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数：**
 
 一般情况下，对象的方法都在构造函数的原型对象中设置。我们可以通过下面的方式给原型对象prototype设置方法：
 
@@ -924,7 +924,7 @@ ES6之前并没有给我们提供 extends 继承。我们可以通过**构造函
 
 #### 6.1.2 核心原理
 
-通过 call() 把父类型的 this 指向子类型的 this ，这样就可以实现子类型继承父类型的属性。   
+通过 call() 把父类型的 this 指向子类型的 this ，这样就可以实现**子类型继承父类型的属性**。   
 
 ```javascript
 // 借用父构造函数继承属性
@@ -1223,7 +1223,7 @@ JavaScript 为我们专门提供了一些函数方法来帮我们更优雅的处
           this.disabled = true
           setTimeout(function() {
               this.disabled = false
-          }.bind(this),2000)
+          }.bind(this),2000)//如果不指定this，那么this就是window，window当然没有disabled属性
       }
   }
   ```
@@ -1526,7 +1526,180 @@ ES5 中给我们新增了一些方法，可以很方便的操作数组或者字�
 
 ### 8.1 数组方法
 
-#### 8.1.1 forEach()
+#### 8.1.1 创建数组的基本方式
+
+1. 使用Array构造函数：
+
+   ```js
+   var arr = new Array()
+   
+   //表示创建length为3的数组
+   var arr = new Array(3)
+   
+   //表示创建包含这几项的数组
+   var arr = new Array('red','yellow','blue')
+   ```
+
+   
+
+2. 字面量：
+
+   ```js
+   var arr = []
+   ```
+
+#### 8.1.2 检测数组
+
+```js
+if (value instanceof Array){
+//instanceof的问题在于它假定只有一个全局执行环境，若网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而有不同版本的Array构造函数
+}
+```
+
+```js
+if (Array.isArray(value)){
+
+}
+```
+
+#### 8.1.3 栈方法
+
+**push**()：添加到末尾，返回修改后数组的长度
+
+**pop**()：移除最后一项，返回移除的项
+
+#### 8.1.4 队列方法
+
+**shift**()：移除数组第一项，返回移除的项
+
+结合使用shift() 和push()方法，可以像使用队列一样使用数组
+
+**unshift**()：在数组的第一项添加任意个项，返回数组的长度
+
+结合使用unshift()和pop()方法，可以从相反的方向来模拟队列
+
+#### 8.1.5 排序方法
+
+**reserve**()为反转数组
+
+**sort**()：
+
+1. 默认情况下，sort方法按照升序排列数组项，该方法会调用每个数组项的**toString**方法，然后比较得到的字符串，再确定如何排序。**即使数组中的每一项都是数值，sort方法得到的也是字符串。**
+
+2. sort方法可以接受一个**比较函数**作为参数，比较函数返回两个参数，**如果第一个参数应该在第二个参数之前，返回负数；如果第一个参数应该在第二个参数之后，返回正数；如果两个参数相等，则返回0**；
+
+   来看下面的这个例子：
+
+   ```js
+   function compare(value1, value2) {
+       if (value1 < value2){
+          return 1
+       } else if (value1 > value2) {
+          return -1
+       } else {
+          return 0
+       }
+   }
+   var values = [0,1,5,10,15]
+   values.sort(compare)
+   console.log(values)//0,1,5,10,15
+   ```
+
+   我们也可以将compare函数写成这样：
+
+   ```js
+   function compare(value1,value2) {
+   	return value1 - value2
+   }
+   ```
+
+   注意，如果你想通过sort实现降序，那么你可以把compare函数写成这样：
+
+   ```js
+   function compare(value1, value2) {
+   	return value2 - value1
+   }
+   ```
+
+sort()和reserve()都返回排序之后的数组
+
+#### 8.1.6 操作方法
+
+**concat**()：不会影响原数组
+
+```
+var arr1 = [1,2,3]
+var arr2 = arr1.concat(4,5,[6,7])
+console.log(arr1)//1,2,3
+console.log(arr2)1,2,3,4,5,6,7
+```
+
+
+
+**slice**()：
+
+- 不会影响原数组
+- 能够基于当前数组的一或多个项创建一个新的数组
+- 可以接受一个参数，返回以该参数为索引到当前数组末尾的所有项
+- 可以接受两个参数，返回起始到结束位置之间的项，但是不包括结束位置的项。
+
+```js
+var arr1 = [1,2,3,4,5]
+var arr2 = arr1.slice(1)
+var arr3 = arr1.slice(1,4)
+
+console.log(arr1)//1,2,3,4,5
+console.log(arr2)//2,3,4,5
+console.log(arr3)//2,3,4
+```
+
+
+
+**splice**()：
+
+splice方法的本质就是：第一个参数为起始位置，第二个参数为删除的项数，第三个参数为插入的项；
+
+根据这个原理，splice可以实现三种功能：删除，插入，替换
+
+
+
+#### 8.1.7 位置方法
+
+**indexOf**()和**lastIndexOf**()
+
+indexOf方法和lastIndexOf方法接受两个参数——要查找的项和表示查找起点位置的索引（可选）。其中，indexOf从数组的开头开始向后查找，而lastIndexOf从数组的结尾开始向前查找。
+
+这两个方法都返回要查找的项在数组中的位置，或者在没找到的情况下返回-1。
+
+```js
+var arr = [1,2,3,4,5,4,3,2,1]
+
+console.log(arr.indexOf(4))//3
+console.log(arr.lastIndexOf(4))//5
+console.log(arr.indexOf(4,4))//5
+console.log(arr.lastIndexOf(4,4))//3
+```
+
+在比较第一个参数与数组中的每一项时，会使用全等操作符，也就是说，要求查找的项必须严格相等，就像使用===一样。看下面的例子：
+
+```js
+var person = {name:'李琳琦'}
+var people = [{name:'李琳琦'}]
+
+console.log(people.indexOf(person))//-1
+
+var morePeople = [person]
+
+console.log(morePeople.indexOf(person))//0
+```
+
+
+
+
+
+#### 8.1.8 迭代方法
+
+##### forEach()
 
 - 语法：
 
@@ -1559,7 +1732,7 @@ ES5 中给我们新增了一些方法，可以很方便的操作数组或者字�
 
 
 
-#### 8.1.2 some()
+##### some()
 
 - 语法：
 
@@ -1592,7 +1765,7 @@ ES5 中给我们新增了一些方法，可以很方便的操作数组或者字�
 
 
 
-#### 8.1.3 forEach和some方法的区别：
+##### forEach和some方法的区别：
 
 1. **forEach：**
 
@@ -1631,7 +1804,7 @@ ES5 中给我们新增了一些方法，可以很方便的操作数组或者字�
 
 
 
-#### 8.1.4 filter()
+##### filter()
 
 - 语法：
 
@@ -1669,7 +1842,7 @@ ES5 中给我们新增了一些方法，可以很方便的操作数组或者字�
 
 
 
-#### 8.1.5 map()
+##### map()
 
 map() 方法也是创建一个数组，新数组中的元素是通过回调函数的返回值决定的。
 
@@ -1685,7 +1858,7 @@ console.log(newNum)//[2,4,6]
 
 
 
-#### 8.1.6 reduce()
+#### reduce()
 
 先来看reduce的一个例子：
 
@@ -1702,7 +1875,7 @@ reduce() 常用于对数组中所有的元素进行汇总，上述代码中 **pr
 
 
 
-#### 8.1.7 filter() map() reduce() 结合小案例
+#### filter() map() reduce() 结合小案例
 
 ```javascript
 const nums = [10, 20, 111, 222, 444, 40, 50]
@@ -1732,7 +1905,7 @@ console.log(total);
 
 - 说明：
 
-  - trim()  方法会从一个字符串的两端删除空白字符；
+  - trim()  方法会从一个字符串的**两端**删除空白字符；
   - trim() 方法并不影响原字符串本身，它返回的是一个新的字符串。
 
 - 举例：
@@ -1740,8 +1913,8 @@ console.log(total);
   ```javascript
   var str = '   an  dy   ';
   var str1 = str.trim();
-  console.log(str1);
-  console.log(str);
+  console.log(str1);//an  dy
+  console.log(str);//   an  dy   
   ```
 
 
@@ -1771,7 +1944,7 @@ console.log(total);
   	price: 1999,
   	num: 2000
   };
-  var arr = Object.keys(obj);
+  var arr = Object.keys(obj);//[id, pname, price, num]
   console.log(arr);
   arr.forEach(function(value) {
   	console.log(value);
@@ -1780,7 +1953,7 @@ console.log(total);
 
   
 
-#### 8.3.2 Object.defineProperty()
+#### 8.3.2 Object.defineProperty()——Vue中常用
 
 - 语法：
 
@@ -1847,6 +2020,114 @@ console.log(total);
   ```
 
   
+
+## 九、拷贝
+
+- 浅拷贝只是拷贝一层，更深层次对象级别的只拷贝引用地址
+- 深拷贝拷贝多层，每一级别的数据都会拷贝
+
+### 9.1 浅拷贝
+
+```js
+let obj = {
+  id: 1,
+  name: '李琳琦',
+  message: {
+    age: 18
+  }
+}
+
+let o = {}
+
+// for in 实现浅拷贝
+for (k in obj) {
+  o[k] = obj[k]
+}
+
+//通过对象o修改深层属性值
+o.message.age = 20
+console.log(o)//age=20
+console.log(obj)//age=20
+```
+
+- 浅拷贝可以通过for...in...的方式来实现
+
+- 浅拷贝只是拷贝一层，更深层次的只是拷贝引用地址，因此通过其中任何一个对象修改深层属性的属性值时，每个对象的属性值都会被改变（注意，修改第一层的属性值是互不影响的）
+
+  ![](./images/javascript/浅拷贝.png)
+
+- 在**ES6**中，我们还可以通过另一种更加推荐的方式来实现浅拷贝：
+
+  ```js
+  let obj = {
+    id: 1,
+    name: '李琳琦',
+    message: {
+      age: 18
+    }
+  }
+  let o = {}
+  // Object.assign 实现浅拷贝
+  Object.assign(o, obj)
+  ```
+
+  - **Object.assign**接受两个参数，一个是拷贝的对象，一个是被拷贝的对象
+  - **Object.assign**的实现结果和for...in...的实现结果是一模一样的
+
+
+
+### 9.2 深拷贝
+
+- 深拷贝拷贝多层，每一级别的数据都会拷贝 
+
+- 实现的思路是封装一个深拷贝的函数，通过if判断类型，递归调用函数
+
+- 分别判断数组、对象、普通数据类型，注意数组的判断要放在对象的判断之前，因为数组也是对象
+
+- 修改深层属性的属性值，原对象不会受影响
+
+  ![](./images/javascript/深拷贝.png)
+
+```js
+// 深拷贝拷贝多层, 每一级别的数据都会拷贝.
+var obj = {
+    id: 1,
+    name: 'andy',
+    msg: {
+        age: 18
+    },
+    color: ['pink', 'red']
+};
+var o = {};
+// 封装函数 
+function deepCopy(newobj, oldobj) {
+    for (var k in oldobj) {
+        // 判断我们的属性值属于哪种数据类型
+        // 1. 获取属性值  oldobj[k]
+        var item = oldobj[k];
+        // 2. 判断这个值是否是数组
+        if (item instanceof Array) {
+            newobj[k] = [];
+            deepCopy(newobj[k], item)
+        } else if (item instanceof Object) {
+            // 3. 判断这个值是否是对象
+            newobj[k] = {};
+            deepCopy(newobj[k], item)
+        } else {
+            // 4. 属于简单数据类型
+            newobj[k] = item;
+        }
+
+    }
+}
+deepCopy(o, obj);
+console.log(o);
+
+o.msg.age = 20;
+console.log(obj);
+```
+
+
 
 
 
@@ -1944,7 +2225,7 @@ console.log("哈哈代码");
 
 我是这么理解的，setTimeout实际上在主线程中，只是将回调函数放入任务队列中，然后它就功成身退了。js主线程继续往下执行→for循环→“哈哈代码”。
 
-在js主线程执行完全部的代码后，即空闲时，它会查看任务队列，有没有需要执行的任务。此时它就发现了一名“弃婴”，即setTimeout的回调函数，根据setTimeout设置好的延时，执行函数。另外，任务队列是队列，因此是先进先出的，先进来的任务，就先完成。
+在js主线程执行完全部的代码后，即空闲时，它会查看任务队列，有没有需要执行的任务。此时它就发现了一名“弃婴”，即setTimeout的回调函数，执行函数。另外，任务队列是队列，因此是先进先出的，先进来的任务，就先完成。
 
 ![同步异步setTimeout](D:\52007前端学习\前端笔记\images\javascript\同步异步setTimeout.png)
 
@@ -1965,7 +2246,7 @@ for(var i=0;i<1000000;i++){
 console.log("哈哈代码");
 ```
 
-输出结果是：先隔一段时间（执行for循环）→哈哈代码→3秒后输出“setTimeout”→3秒后输出“setTimeout02”。
+输出结果是：先隔一段时间（执行for循环）→哈哈代码→“setTimeout”→“setTimeout02”。
 
 我们可以知道在setTimeout的回调函数里面，他也是按照这样的机制来执行代码的。
 
@@ -1990,7 +2271,7 @@ ES6 实际上是一个泛指，泛指  ES2015 及后续的版本。
 
 ## let关键字
 
-- ES6中新增的用于声明变量的关键字
+- ES6中新增的用于**声明变量**的关键字
 
 - let声明的变量只在所处于的块级有效
 - 使用let关键字声明的变量才具有块级作用域，使用var声明的变量不具备块级作用域特性
@@ -2016,8 +2297,6 @@ console.log(a); //ReferenceError: a is not defined
 
   - 暂时性死区
 
-    
-    
     ```javascript
     var tmp = 123;
     if(true){
@@ -2025,7 +2304,7 @@ console.log(a); //ReferenceError: a is not defined
     	let tmp;
     } //ReferenceError: Cannot access 'tmp' before initialization
     ```
-
+  
 - 经典面试题：
 
   **Q1：请问下面代码输出结果是什么？**
@@ -2041,12 +2320,13 @@ console.log(a); //ReferenceError: a is not defined
    arr[0](); //2
    arr[1](); //2
   ```
-```
-  
+
 此题的关键点在于变量i是全局的，函数执行时输出的都是全局作用域下的i值。
-  
-**Q2 ：请问下面代码输出结果是什么？**
-  
+
+
+
+  	**Q2 ：请问下面代码输出结果是什么？**
+
   ```javascript
    let arr = [];
    for (let i = 0; i < 2; i++) {
@@ -2056,9 +2336,9 @@ console.log(a); //ReferenceError: a is not defined
    }
    arr[0](); //0
    arr[1](); //1
-```
+  ```
 
-  此题的关键点在于每次循环都会产生一个块级作用域，每个块级作用域中的变量都是不同的，函数执行时输出的是自己上一级（循环产生的块级作用域）作用域下的i值.
+此题的关键点在于每次循环都会产生一个块级作用域，每个块级作用域中的变量都是不同的，函数执行时输出的是自己上一级（循环产生的块级作用域）作用域下的i值.
 
 
 
@@ -2083,7 +2363,7 @@ console.log(a); //ReferenceError: a is not defined
     const PI; //SyntaxError: Missing initializer in const declaration
     ```
 
-  - 常量赋值后，值不能修改
+  - 常量赋值后，值（内存地址）不能修改
 
     ```javascript
     const PI = 3.14;
@@ -2295,15 +2575,15 @@ refn(); //obj
    }
    
    obj.say();
-```
-   
-上面这段代码的输出结果是100。
+   ```
+
+   上面这段代码的输出结果是100。
    
    我们说箭头函数不绑定this，因此在调用 say 属性中的箭头函数时如果不指定this，那么this指向window。而window中的age是100。
 
 
 
-2. 1
+2. 
 
    ```javascript
    const obj = {
@@ -2332,9 +2612,10 @@ refn(); //obj
    }
    
    obj.aaa()
-```
-   
-   
+   ```
+
+
+
 
 ## 剩余参数
 
@@ -2367,19 +2648,20 @@ console.log(b); //["李四", "王五"]
 
 扩展运算符可以将数组或者对象转为**用逗号分隔的参数序列**。
 
-```javascript
+```
 let arr = [1,2,3];
 console.log(...arr); // 1 2 3
 ```
 
-- 应用1：合并数组、
+- 应用1：数组拼接
 
-  ```javascript
-  let arr1 = [1,2,3];
-  let arr2 = [4,5,6];
-  let arr3 = [...arr1, ...arr2];
-  console.log(arr3); //[1,2,3,4,5,6]
-  ```
+```
+
+let arr1 = [1,2,3];
+let arr2 = [4,5,6];
+let arr3 = [...arr1, ...arr2];
+console.log(arr3); //[1,2,3,4,5,6]
+```
 
   
 
